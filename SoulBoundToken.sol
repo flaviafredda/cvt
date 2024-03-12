@@ -15,7 +15,7 @@ contract Soulbound is ERC721, Ownable {
 
     constructor(address initialOwner) ERC721("SoulBound", "SBT")  Ownable(initialOwner) {}
 
-    function _beforeTokenTransfer(address from, address to, uint256 /*tokenId*/)
+    function _beforeTokenTransfer(address from, address to)
     internal virtual 
     {
         require(from == address(0), "Token not transferable");
@@ -28,16 +28,15 @@ contract Soulbound is ERC721, Ownable {
         _safeMint(to, tokenId);
     }
 
-    /*function _burn(uint256 tokenId) internal override(ERC721) {
-        super._burn(tokenId);
-    }*/
-
     function tokenURI(uint256 tokenId)
         public
         view
         override(ERC721)
         returns (string memory)
     {
-        return super.tokenURI(tokenId);
-    }
+	return string.concat(
+      		baseTokenURI(),
+      		Strings.uint2str(_tokenId)
+  	);   
+     }
 }
